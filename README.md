@@ -27,7 +27,9 @@ sudo apt upgrade
   ```
   - Temporarily change the port Pi-hole's web interface listens to by entering following command.
   
-  ```sudo nano /etc/lighttpd/lighttpd.conf```
+  ```
+  sudo nano /etc/lighttpd/lighttpd.conf
+  ```
     
   - Edit below entry in above file.
   ```
@@ -64,13 +66,14 @@ hostname -I
 
 7. Upon loading the OpenMediaVault web interface, you will be asked to log in to be able to proceed.
 
-The default username is admin, and the default password is openmediavault.
+The default username is admin and the default password is openmediavault.
 
-5. Once you have logged in, you will be greeted by the OpenMediaVault dashboard.
+8. Once you have logged in, you will be greeted by the OpenMediaVault dashboard.
 
-6. We'll need to change default port of OpenMediaVault so that Pi-hole can run on default http port and hence sustain updates. To do that, Click on Home icon and goto General Settings. Change the value of port to something like `8080`.
-7. It is also recommended to change the default web administrator password. To do that, click on Web Administrator Password section in General Settings. Type in your new password, confirm password and click save.
-8. Finally, we'll be reverting Pi-hole settings to default port.
+9. yYou'll need to change default port of OpenMediaVault so that Pi-hole can run on default http port and hence sustain updates. To do that, Click on Home icon and goto General Settings. Change the value of port to something like `8080`. Click save
+10. It is also recommended to change the default web administrator password. To do that, click on Web Administrator Password section in General Settings. Type in your new password, confirm password and click save.
+11. For the changes to take effect, click Apply. To confirm the changes, click Yes.
+12. Finally, we'll be reverting Pi-hole settings to default port. Login to raspberrypi via ssh.
   - Stop Pi-hole service by following command:
 
   ```
@@ -78,7 +81,9 @@ The default username is admin, and the default password is openmediavault.
   ```
   - Edit the conf file.
   
-  ```sudo nano /etc/lighttpd/lighttpd.conf```
+  ```
+  sudo nano /etc/lighttpd/lighttpd.conf
+  ```
     
   - Edit below entry in above file.
   ```
@@ -86,7 +91,7 @@ The default username is admin, and the default password is openmediavault.
   ```
   - To save press Ctrl+X --> Y --> Enter
 
-9. Restart your Raspberry Pi by running the following command.
+12. Restart your Raspberry Pi by running the following command.
 
 ```
 sudo reboot
@@ -100,6 +105,7 @@ http://raspberrypiIP:8080
 
 2. Log into OpenMedisvault web interface.
 3. It is recommended to format the drive prior mounting and configuring a NAS share. However, you can ignore these steps and hop to mounting part if you know what you're doing. 
+
 4. Click on disks under Storage section to the left in OpenMediaVault Web Interface.
    - Here, 1st disk will be your SD Card on which your OS resides and below that(/dev/sdaX) would be your externally mounted drives.
    - Select the disk which you want to use as a NAS share. For me it is /dev/sda.
@@ -112,7 +118,32 @@ http://raspberrypiIP:8080
    - This will take a while. Once the process completes, click on Close.
    - Select the File System you just created (for me it was /dev/sda1) and click on Mount.
 
+6. For the changes to take effect, click Apply. To confirm the changes, click Yes.
+
 ### Creating Shared Folder
 
+1. Now we need to create a shared folder that exists on our newly added filesystem. Go to the Shared folders settings page by clicking the “Shared Folders” option in the sidebar.
+
+2. Click on "+ Add" button.
+3. Type in the Name of your shared folder, select the file system that you just created from the Device dropdown menu, and select the permissions(Everyone read/write for ease of access in your local network) for your shared folder using the Permissions dropdown menu. Once you have completed this step, click Save.
+4. A shared folder should be created. For the changes to take effect, click Apply. To confirm the changes, click Yes.
 
 ### Enabling SAMBA/CIFS
+
+1. To enable the share, go to Services > SMB/CIFS and then click on Enable in Settings --> General Settings.
+2. Click save. For the changes to take effect, click Apply. To confirm the changes, click Yes.
+3. Navigate to Services --> SMB/CIFS --> Shares tab and click "+ Add".
+4. Click on enable. Select the Shared folder you just created from the dropdown menu. There are many options. You can configure your share however you want. To allow everyone to have full access to the share, we choose Guests allowed from the Public dropdown menu. I have these things enabled "Set Browsable", "Honor existing ACLs" and "Enable permissions inheritance". Click Save.
+5. For the changes to take effect, click Apply. To confirm the changes, click Yes.
+6. Voila! The share you just created is ready to be accessed by any system in your network. Open File Explorer on Windows 10, click on network and raspberrypi host should be visible or navigate to \\raspberrypiIP\ in file explorer. The SMB/CIFS share running on the Raspberry Pi 4 should be displayed.
+
+### Troubleshooting
+
+1. If your Pi-hole installation says Lost Connection to API. To fix it, type below pihole repair command.
+   ```
+   pihole -r
+   ```
+   
+2. Select yes when it prompts whether you want to keep existing configuration.
+3. Wait for the process to complete.
+4. Profit.
