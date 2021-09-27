@@ -1,4 +1,4 @@
-# How to configure any external storage into NAS with OpenMediaVault on RaspberryPi
+# How to configure any external storage into NAS with OpenMediaVault 5 on RaspberryPi
 ***
 **Important Information**
 
@@ -27,7 +27,7 @@ sudo apt upgrade
   ```
   - Temporarily change the port Pi-hole's web interface listens to by entering following command.
   
-  `sudo nano /etc/lighttpd/lighttpd.conf`
+  ```sudo nano /etc/lighttpd/lighttpd.conf```
     
   - Edit below entry in above file.
   ```
@@ -78,7 +78,7 @@ The default username is admin, and the default password is openmediavault.
   ```
   - Edit the conf file.
   
-  `sudo nano /etc/lighttpd/lighttpd.conf`
+  ```sudo nano /etc/lighttpd/lighttpd.conf```
     
   - Edit below entry in above file.
   ```
@@ -86,6 +86,33 @@ The default username is admin, and the default password is openmediavault.
   ```
   - To save press Ctrl+X --> Y --> Enter
 
-### Creating a NAS CIFS Share
+9. Restart your Raspberry Pi by running the following command.
+
+```
+sudo reboot
+```
+
+### Setting up drive
+
+1. If you have followed above process correctly, OpenMediaVault web interface can be accessed by following URL.
+
+http://raspberrypiIP:8080
+
+2. Log into OpenMedisvault web interface.
+3. It is recommended to format the drive prior mounting and configuring a NAS share. However, you can ignore these steps and hop to mounting part if you know what you're doing. 
+4. Click on disks under Storage section to the left in OpenMediaVault Web Interface.
+   - Here, 1st disk will be your SD Card on which your OS resides and below that(/dev/sdaX) would be your externally mounted drives.
+   - Select the disk which you want to use as a NAS share. For me it is /dev/sda.
+   - Click on wipe --> select yes --> select quick.
+   - Once the process completes, the disk should be ready to me mounted.
+
+5. Click on File Systems under Storage section to the left in OpenMediaVault Web Interface.
+   - Click on + Create icon.
+   - Select your formatted drive, type in your desired label (make sure to not to include any spaces), select file system as EXT4, click on Ok.
+   - This will take a while. Once the process completes, click on Close.
+   - Select the File System you just created (for me it was /dev/sda1) and click on Mount.
+
+### Creating Shared Folder
 
 
+### Enabling SAMBA/CIFS
