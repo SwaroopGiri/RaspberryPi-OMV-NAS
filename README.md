@@ -144,6 +144,6 @@ http://raspberrypiIP:8080
    pihole -r
    ```
    
-2. Select yes when it prompts whether you want to keep existing configuration.
+2. Select Yes when it prompts whether you want to keep existing configuration.
 3. Wait for the process to complete.
 4. Profit.
