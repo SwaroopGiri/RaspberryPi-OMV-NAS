@@ -1,4 +1,4 @@
-# How to convert any external storage into NAS with OpenMediaVault on RaspberryPi
+# How to configure any external storage into NAS with OpenMediaVault on RaspberryPi
 ***
 **Important Information**
 
