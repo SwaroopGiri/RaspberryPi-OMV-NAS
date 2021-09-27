@@ -26,7 +26,14 @@ sudo apt upgrade
   sudo service pihole-FTL stop
   ```
   - Temporarily change the port Pi-hole's web interface listens to by entering following command.
-    ` /etc/lighttpd/lighttpd.conf `
+  
+  `sudo nano /etc/lighttpd/lighttpd.conf`
+    
+  - Edit below entry in above file.
+  ```
+  server.port = 8000
+  ```
+  - To save press Ctrl+X --> Y --> Enter
 
 3. Enter the following commands to do a base OpenMediaVault installation. We can run the following command to download the OpenMediaVault install script and pipe it directly through to bash.
 
@@ -38,8 +45,47 @@ You can verify the contents of this script by going directly to the OpenMediaVau
 wget -O - https://raw.githubusercontent.com/OpenMediaVault-Plugin-Developers/installScript/master/install | sudo bash
 ```
 
-Under Global settings add one or more servers. You can find list of available servers in dnscrypt [repo](https://github.com/dnscrypt/dnscrypt-resolvers). For example, you can search for DNS servers that block ads, support doh (DNS over HTTPS), view locations, etc. V3 is the most recently updated list, hence, we will be using V3 ODOH [server list](https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/odoh-servers.md) and pairing servers with [relay list](https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/odoh-relays.md) to anonymize the queries. You can also check out the public DNSCrypt server list and pick one or more that fits your requirements. 
+4. Once the installation process has completed, it is recommended to restart your Raspberry Pi.
+
+Restart your Raspberry Pi by running the following command.
 
 ```
-server_names = ['odoh-cloudflare' , 'odohrelay-koki-ams']
+sudo reboot
 ```
+
+5. To be able to access the OpenMediaVault Web GUI, you will need to know your Raspberry Pi’s static IP address.
+
+If you don’t know your Raspberry Pi’s IP address, you can run the following command.
+```
+hostname -I
+```
+
+6. With your Raspberry Pi’s local IP address, type in that IP address in your favorite web browser.
+
+7. Upon loading the OpenMediaVault web interface, you will be asked to log in to be able to proceed.
+
+The default username is admin, and the default password is openmediavault.
+
+5. Once you have logged in, you will be greeted by the OpenMediaVault dashboard.
+
+6. We'll need to change default port of OpenMediaVault so that Pi-hole can run on default http port and hence sustain updates. To do that, Click on Home icon and goto General Settings. Change the value of port to something like `8080`.
+7. It is also recommended to change the default web administrator password. To do that, click on Web Administrator Password section in General Settings. Type in your new password, confirm password and click save.
+8. Finally, we'll be reverting Pi-hole settings to default port.
+  - Stop Pi-hole service by following command:
+
+  ```
+  sudo service pihole-FTL stop
+  ```
+  - Edit the conf file.
+  
+  `sudo nano /etc/lighttpd/lighttpd.conf`
+    
+  - Edit below entry in above file.
+  ```
+  server.port = 80
+  ```
+  - To save press Ctrl+X --> Y --> Enter
+
+### Creating a NAS CIFS Share
+
+
